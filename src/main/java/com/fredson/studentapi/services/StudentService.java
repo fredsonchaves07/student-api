@@ -5,6 +5,8 @@ import com.fredson.studentapi.entities.Student;
 import com.fredson.studentapi.repositories.StudentRepository;
 import com.fredson.studentapi.services.excpetions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,16 @@ public class StudentService {
             return new StudentDTO(repository.save(repository.getById(id)));
         } catch (EntityNotFoundException exception) {
             throw new ResourceNotFoundException("Student not found");
+        }
+    }
+
+    public void  delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException("Student not found!");
+        } catch (DataIntegrityViolationException exception) {
+            throw new RuntimeException("Integrity violation");
         }
     }
 }

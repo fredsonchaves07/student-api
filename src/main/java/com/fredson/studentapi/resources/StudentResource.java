@@ -42,4 +42,10 @@ public class StudentResource {
     public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody StudentDTO student) {
         return ResponseEntity.ok(service.update(id, student));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
